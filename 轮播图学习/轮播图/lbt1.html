@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+
+
+        .slideshow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 700px;
+            transform: translate(-50%, -50%);
+        }
+
+        .image {
+            width: 100%;
+        }
+
+        .image img {
+            display: block;
+            width: 100%;
+        }
+
+        .previous,
+        .next {
+            position: absolute;
+            /* 下面两句实现切换按钮垂直居中 */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            margin-left: 5px;
+            border-radius: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            font: 700 20px/2 "Arial";
+            color: white;
+            text-align: center;
+        }
+
+        .next {
+            right: 5px;
+        }
+
+        .previous:hover,
+        .next:hover {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .dotContainer {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .dot {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin: 0px 4px;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        .dot .selected {
+            background-color: rgb(72, 72, 72);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slideshow">
+        <div class="image">
+            <img id="imgShow">
+        </div>
+        <div class="previous" id="prev" onclick="changeImage(true)">《</div>
+        <div class="next" id="next" onclick="changeImage(false)">》</div>
+        <div class="dotContainer" id="dotContainer"></div>
+    </div>
+
+    <script>
+        let images = ['轮播图.avif', '轮播图2.avif', '轮播图3.avif', '轮播图.avif', '轮播图5.avif', '轮播图6.avif'];
+        let imgNow = 0;
+        let dots = [];
+        let dotContainer = document.getElementById('dotContainer');
+        let intervalId;
+
+        /* 创建圆点 */
+        for (let i = 0; i < images.length; i++) {
+            let dot = document.createElement('span');
+            dot.id = 'dot' + i;
+            dot.classList.add('dot');
+            dot.addEventListener('click', function() {
+                clearInterval(intervalId);
+                let dotID = this.getAttribute("id");
+                imgNow = parseInt(dotID.replace('dot', ''));
+                document.getElementById("imgShow").src = images[imgNow];
+                for (let i = 0; i < dots.length; i++) {
+                    dots[i].className = "dot";
+                }
+                this.className = " selected";
+                intervalId = setInterval(changer, 2000);
+            });
+            dotContainer.appendChild(dot);
+            dots.push(dot);
+        }
+
+        function changer() {
+            changeImage(false);
+        }
+        function changeImage(direction) {
+            Array.from(dots).forEach((dot) => dot.classList.remove('selected'));
+            if (direction) {
+                imgNow = (imgNow - 1 + images.length) % images.length;
+            } else {
+                imgNow = (imgNow + 1) % images.length;
+            }
+            document.getElementById('imgShow').src = images[imgNow];
+            dots[imgNow].classList.add('selected');
+        }
+
+        imgShow.addEventListener('mouseover', () => {
+            clearInterval(intervalId);
+        });
+
+        imgShow.EventListener('mouseout', () => {
+            intervalId = setInterval(changer, 2000);
+        });
+    </script>
+</body>
+
+</html>

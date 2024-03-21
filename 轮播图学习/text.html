@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+
+        //数组结构
+        // const arr =['red','pink','yellow','green']
+        // const [one,two,three,four] = arr;
+        // console.log(one);
+
+
+        //对象结构
+        // const Obj = {
+        //     name: '乔治',
+        //     age: 6,
+        // }
+        // const { name, age } = Obj
+        // console.log(name);
+
+        //每一个构造函数都有一个prototype属性，指向另一个对象，也称之为原型对象
+        //公共的方法要写到原型对象身上
+        //公共的属性写到构造函数身上
+        //原型对象是构造函数的一个属性  作用是共享方法
+        //原型函数里面的this指向实例化的对象
+            function Star(uname,age){
+                this.uname = uname;
+                this.age =age;
+            }
+            Star.prototype.sing = function(){
+                    console.log('唱歌');
+                }
+            const ldh = new Star('刘德华',58);
+            const zxy = new Star('张学友',66);
+            // console.dir(Star.prototype);
+    </script>
+</body>
+
+</html>

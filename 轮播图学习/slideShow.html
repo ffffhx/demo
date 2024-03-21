@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>slideShow</title>
+</head>
+
+<body>
+    <style>
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+
+        #container {
+            height: 600px;
+        }
+
+        img {
+            height: 600px;
+        }
+
+        #next {
+            position: relative;
+            bottom: 370px;
+            left: 1010px;
+            width: 35px;
+            height: 35px;
+            font-size: 30px;
+            border-radius: 50%;
+            line-height: 1.1;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #next:hover {
+            background-color: gray;
+        }
+
+        #prev {
+            position: relative;
+            bottom: 420px;
+            width: 35px;
+            height: 35px;
+            font-size: 30px;
+            border-radius: 50%;
+            line-height: 1.1;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #prev:hover {
+
+            background-color: gray;
+        }
+
+        #dotContainer {
+            display: flex;
+            position: relative;
+            bottom: 140px;
+            left: 400px;
+            color: gray;
+
+        }
+
+        #dotContainer div {
+            font-size: 100px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .active {
+            color: red;
+        }
+    </style>
+    <div id="container">
+        <div id="imgList">
+            <img src="轮播图.avif" id="img">
+        </div>
+        <div id="dotContainer" class="dotContainer"></div>
+        <div id="next"><svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-xiayiyeqianjinchakangengduo"></use>
+            </svg></div>
+        <div id="prev"><svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-shangyiyehoutuifanhui"></use>
+            </svg></div>
+    </div>
+    <script src="iconfont.js"></script>
+    <script>
+        const images = [
+            '轮播图.avif',
+            '轮播图2.avif',
+            '轮播图3.avif',
+            '轮播图4.avif',
+            '轮播图5.avif',
+            '轮播图6.avif'
+        ]
+        const container = document.getElementById('container');
+        const imgList = document.getElementById('imgList');
+        const img = document.getElementById('img');
+        const dotContainer = document.getElementById('dotContainer');
+        const next = document.getElementById('next');
+        const prev = document.getElementById('prev');
+        let i = 0;
+        //创建小圆点
+        for (let j = 0; j < 6; j++) {
+            const dot = document.createElement('div');
+            if(j===0){
+                dot.classList.add('active');
+            }
+            dot.classList.add('dot');
+            dot.id = j+1;
+            dot.innerHTML = '.';
+            dotContainer.appendChild(dot);
+        }
+        const dots = document.querySelectorAll('.dot');
+        const dotsArray = Array.from(dots);
+        next.addEventListener('click', () => {
+            imgNext()
+        })
+        prev.addEventListener('click', () => {
+            if (i <= 0) {
+                i = 6
+            }
+            i--;
+            img.src = images[i];
+            document.querySelector('.active').classList.remove('active');
+            dotsArray[i].classList.add('active');
+        })
+        function imgNext() {
+            if (i >= 5) {
+                i = -1
+            }
+            i++;
+            img.src = images[i];
+            document.querySelector('.active').classList.remove('active');
+            dotsArray[i].classList.add('active');
+        }
+        let timer = setInterval(imgNext, 2000); //引号表示字符串
+        container.addEventListener('mouseenter', () => {
+            clearInterval(timer);
+        })
+        container.addEventListener('mouseleave', () => {
+            timer = setInterval(imgNext, 2000);
+        })
+        //采用事件委托的方式，直接将事件绑定到父元素身上
+        dotContainer.addEventListener('click', function (event) {
+            i = event.target.id - 1;
+            img.src = images[i];
+            document.querySelector('.active').classList.remove('active');//querySelector后面的内容需要加点
+            dotsArray[i].classList.add('active');
+        })
+
+    </script>
+</body>
+
+</html>

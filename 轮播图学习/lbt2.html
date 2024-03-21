@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图</title>
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 800px;
+            overflow: hidden;
+        }
+
+        .container ul {
+            display: flex;
+            width: 5600px;
+            height: 450px;
+        }
+
+        .container img {
+            width: 800px;
+            height: 450px;
+        }
+
+        #iconList {
+            display: flex;
+            position: absolute;
+            right: 700px;
+            top: 420px;
+        }
+
+        #iconList li {
+            width: 20px;
+            list-style: none;
+            background-color: #666;
+            border-radius: 50%;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+        .prev {
+            position: absolute;
+            top: 200px;
+            background-color: red;
+            cursor: pointer;
+        }
+
+        .next {
+            position: absolute;
+            top: 200px;
+            left: 780px;
+            background-color: red;
+            cursor: pointer;
+        }
+    </style>
+    <div class="container" id="container">
+        <ul id="imgList" class="imgList">
+            <li><img src="轮播图.avif"></li>
+            <li><img src="轮播图2.avif"></li>
+            <li><img src="轮播图3.avif"></li>
+            <li><img src="轮播图4.avif"></li>
+            <li><img src="轮播图5.avif"></li>
+            <li><img src="轮播图6.avif"></li>
+            <li><img src="轮播图.avif"></li>
+        </ul>
+    </div>
+    <div id="circle" class="circle">
+        <ul id="iconList">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+        </ul>
+    </div>
+    <div id="prev" class="prev">《</div>
+    <div id="next" class="next">》</div>
+    <script>
+        imgList = document.getElementById('imgList');
+        var timer;
+        var left = 0;
+        var prev = document.getElementById('prev');
+        var next = document.getElementById('next');
+        var icon = document.getElementById('iconList').getElementsByTagName('li');
+        var iconList = document.getElementById('iconList');
+        run();
+        function run() {
+            if (left <= -4800) {
+                left = 0;
+            }
+            imgList.style.marginLeft = left + 'px';
+            var n = (left % 800 == 0) ? n = 1200 : n = 10;
+            var m = Math.floor(-left / 800);
+            left -= 10;
+            iconChange(m);
+            timer = setTimeout(run, n);
+        }
+        function imgChange(n) {
+            let lt = -(n * 800);
+            imgList.style.marginLeft = lt + 'px';
+            left = lt;
+        }
+        prev.onclick = function () {
+            let prevgo = Math.floor(-left / 800) - 1;
+            if (prevgo == -1) {
+                prevgo = 5;
+            }
+            imgChange(prevgo);
+        }
+        next.onclick = function () {
+            let nextgo = Math.floor(-left / 800) + 1;
+            imgChange(nextgo);
+            if (nextgo == 5) {
+                nextgo = 0;
+            }
+        }
+        function iconChange(m) {
+            for (let index = 0; index < icon.length; index++) {
+                icon[index].style.backgroundColor = '';
+            }
+                icon[m].style.backgroundColor = 'red';
+        }
+        iconList.onclick = function(){
+            var tg = event.target;
+            let ico = tg.innerHTML -1;
+            imgChange(ico);
+            iconChange(ico);
+        }
+    </script>
+</body>
+
+</html>

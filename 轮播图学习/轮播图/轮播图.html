@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    img {
+      width: 800px;
+    }
+
+    .main {
+      width: 800px;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .imgList {
+      display: flex;
+      width: 4800px;
+      margin-left: -800px;
+    }
+
+    .circle {
+      display: flex;
+    }
+
+    .circle div {
+      width: 20px;
+      height: 20px;
+      background-color: #666;
+      border-radius: 50%;
+      text-align: center;
+      position: relative;
+      bottom: 80px;
+      left: 300px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    .prev {
+      position: relative;
+      bottom: 280px;
+      width: 20px;
+      cursor: pointer;
+      background-color: red;
+    }
+
+    .next {
+      position: relative;
+      bottom: 260px;
+      width: 20px;
+      left: 780px;
+      background-color: red;
+      cursor: pointer;
+    }
+  </style>
+  <div class="container" id="container">
+    <div class="main" id="main">
+      <div class="imgList" id="imgList">
+        <div><img src="轮播图.avif" alt=""></div>
+        <div><img src="轮播图2.avif" alt=""></div>
+        <div><img src="轮播图3.avif" alt=""></div>
+        <div><img src="轮播图4.avif" alt=""></div>
+        <div><img src="轮播图5.avif" alt=""></div>
+        <div><img src="轮播图6.avif" alt=""></div>
+        <div><img src="轮播图.avif" alt=""></div>
+      </div>
+    </div>
+    <div class="next" id="next">》</div>
+    <div class="prev" id="prev">《</div>
+    <div class="circle" id="circle">
+      <div class="dot">1</div>
+      <div class="dot">2</div>
+      <div class="dot">3</div>
+      <div class="dot">4</div>
+      <div class="dot">5</div>
+      <div class="dot">6</div>
+    </div>
+  </div>
+  <script>
+    const container = document.getElementById('container');
+    const main = document.getElementById('main');
+    const imgList = document.getElementById('imgList');
+    const next = document.getElementById('next');
+    const prev = document.getElementById('prev');
+    const circle = document.getElementById('circle');
+    const dots = document.getElementsByClassName('dot');
+    let left = 0;
+    /*自动播放*/
+    function run() {
+      if (left <= -4800) {
+        left = 0;
+      }
+      left -= 10;
+      imgList.style.marginLeft = left + 'px';
+      var n = (left % 800 == 0) ? 1200 : 20;
+      timer = setTimeout(run, n);
+      var m = Math.floor(left / 800);
+      iconChange(m);
+    }
+    run();
+    /*圆点点击跳转*/
+    function imgChange(m) {
+      let leftAfter = -(m * 800);
+      imgList.style.marginLeft = leftAfter + 'px';
+      left = leftAfter;
+    }
+    circle.addEventListener('click', () => {
+      let tg = event.target.innerHTML;
+      imgChange(tg);
+      iconChange(tg);
+    })
+    /*小圆点改变函数*/
+    function iconChange(m) {
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].style.background = '';
+      }
+      dots[m].style.background = 'red';
+    }
+    /*下一页与上一页*/
+    next.addEventListener('click', () => {
+      let nextgo = Math.floor(-left / 800) + 1;
+      imgChange(nextgo);
+    })
+    prev.addEventListener('click', () => {
+      let prevgo = Math.floor(-left / 800) - 1;
+      imgChange(prevgo);
+    })
+  </script>
+</body>
+
+</html>

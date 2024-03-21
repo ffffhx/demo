@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+
+        #container {
+            height: 600px;
+        }
+
+        img {
+            height: 600px;
+        }
+
+        #next {
+            position: relative;
+            bottom: 370px;
+            left: 1010px;
+            width: 35px;
+            height: 35px;
+            font-size: 30px;
+            border-radius: 50%;
+            line-height: 1.1;
+            text-align: center;
+            cursor: pointer;
+        }
+        #next:hover{
+            background-color: gray;
+        }
+        #prev {
+            position: relative;
+            bottom: 420px;
+            width: 35px;
+            height: 35px;
+            font-size: 30px;
+            border-radius: 50%;
+            line-height: 1.1;
+            text-align: center;
+            cursor: pointer;
+        }
+        #prev:hover{
+
+            background-color: gray;
+        }
+        #dotContainer {
+            display: flex;
+            position: relative;
+            bottom: 140px;
+            left: 400px;
+            color: gray;
+
+        }
+
+        #dotContainer div {
+            font-size: 100px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .active {
+            color: red;
+        }
+    </style>
+    <div id="container">
+        <div id="imgList">
+            <img src="轮播图.avif" id="img">
+        </div>
+        <div id="dotContainer" class="dotContainer">
+            <div class="active" id="1">.</div>
+            <div id="2">.</div>
+            <div id="3">.</div>
+            <div id="4">.</div>
+            <div id="5">.</div>
+            <div id="6">.</div>
+        </div>
+        <div id="next"><svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-xiayiyeqianjinchakangengduo"></use>
+            </svg></div>
+        <div id="prev"><svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-shangyiyehoutuifanhui"></use>
+            </svg></div>
+    </div>
+    <script src="iconfont.js"></script>
+    <script>
+        const container = document.getElementById('container');
+        const img = document.getElementById('img');
+        const images = [
+            '轮播图.avif',
+            '轮播图2.avif',
+            '轮播图3.avif',
+            '轮播图4.avif',
+            '轮播图5.avif',
+            '轮播图6.avif'
+        ]
+        let i = 0;
+        const dotContainer = document.getElementById('dotContainer');
+        const dots = dotContainer.getElementsByTagName('div');
+        const next = document.getElementById('next');
+        const imgList = document.getElementById('imgList');
+        function copy() {
+            img.src = images[i];
+            document.querySelector('.active').classList.remove('active');
+            document.querySelector(`.dotContainer div:nth-child(${i + 1})`).classList.add('active');
+        }
+        next.addEventListener('click', function () {
+            i++;
+            if (i > 5) {
+                i = 0;
+            }
+            copy();
+        })
+        const prev = document.getElementById('prev');
+        prev.addEventListener('click', function () {
+            i--;
+            if (i < 0) {
+                i = 5;
+            }
+            copy();
+
+        })
+        function fn() {
+            i++;
+            if (i > 5) {
+                i = 0;
+            }
+            copy();
+
+        }
+        let timer = setInterval(fn, 1000)
+        container.addEventListener('mouseover', function () {
+            clearInterval(timer);
+        })
+        container.addEventListener('mouseout', function () {
+            timer = setInterval(fn, 1000)
+        });
+//采用事件委托的方式，避免了循环造成的繁琐
+        dotContainer.addEventListener('click',function(event){
+            i = event.target.id - 1;
+                if (i > 5) {
+                    i = 0;
+                }
+                if (i < 0) {
+                    i = 5;
+                }
+                copy();
+        })
+    </script>
+</body>
+
+</html>
